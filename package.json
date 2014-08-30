@@ -1,0 +1,11 @@
+{
+  "name": "cimonitor",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "1.6.5",
+    "express": "4.4.4",
+    "log-timestamp": "0.1.1",
+    "wiring-pi": "1.1.2"
+  }
+}
