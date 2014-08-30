@@ -24,3 +24,6 @@ Done!
 
 As soon as the job starts the orange light will turn on.
 When the job is completed the orange light will go off and red or green will light up depending on the status of the job.
+
+![CI Monitor in action](https://www.trafex.nl/wp-content/uploads/2014/08/2014-08-29-12.14.24-e1409413552822.jpg "CI Monitor in action")
+
