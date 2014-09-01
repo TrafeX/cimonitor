@@ -7,53 +7,66 @@ if (!process.env.DEBUG) {
     }
 }
 
+// WiringPi numbers for the lights
 const GREEN = 0;
 const ORANGE = 1;
 const RED = 2;
 
+// WiringPi states
 const ON = 0;
 const OFF = 1;
 
+// Build status
+const FAILED = 'failed';
+const BUSY = 'busy';
+const SUCCESFUL = 'successful'
+
 var blinkValue = 0;
 var blinkInterval = null;
-var failedJobs = [];
+var jobStatus = [];
 
 exports.failed = function (response) {
-    switchLight(GREEN, OFF);
-    switchLight(ORANGE, OFF);
-    switchLight(RED, ON);
-
-    if(failedJobs.indexOf(response.url) < 0) {
-        console.log('Marking ' + response.url + ' as failed');
-        failedJobs.push(response.url);
-    }
-    stopBlink();
-
+    jobStatus[response.url] = FAILED;
+    stateChanged();
 };
 exports.successfull = function (response) {
-    var jobIndex = failedJobs.indexOf(response.url);
-    if (jobIndex >= 0) {
-        console.log('Marking ' + response.url + ' as restored');
-        failedJobs.splice(jobIndex, 1);
-    }
-    switchLight(GREEN, ON);
-    switchLight(ORANGE, OFF);
-    if (failedJobs.length > 0) {
-        switchLight(RED, ON);
-    } else {
-        switchLight(RED, OFF);
-    }
-    stopBlink();
+    jobStatus[response.url] = SUCCESFUL;
+    stateChanged();
 };
 exports.started = function (response) {
-    switchLight(GREEN, OFF);
-    switchLight(ORANGE, ON);
-    if(failedJobs.indexOf(response.url) >= 0) {
-        switchLight(RED, OFF);
-    }
-    // Enable this to let the orange light blink during job building
-    //blinkLight(ORANGE);
+    jobStatus[response.url] = BUSY;
+    stateChanged();
 };
+
+// Change light state based on job status
+function stateChanged() {
+
+    var greenLight = ON;
+    var orangeLight = OFF;
+    var redLight = OFF;
+
+    for (var jobName in jobStatus) {
+
+        console.log(jobName + ': ' + jobStatus[jobName]);
+        switch (jobStatus[jobName]) {
+            case FAILED:
+                redLight = ON;
+                greenLight = OFF;
+                break;
+            case BUSY:
+                orangeLight = ON;
+                greenLight = OFF;
+                break;
+            case SUCCESFUL:
+                // Green is on by default
+                break;
+        }
+    }
+
+    switchLight(GREEN, greenLight);
+    switchLight(ORANGE, orangeLight);
+    switchLight(RED, redLight);
+}
 
 function switchLight(number, state) {
     console.log('Switch relay ' + number + ' to state ' + state);
@@ -62,6 +75,7 @@ function switchLight(number, state) {
         wpi.digitalWrite(number, state);
     }
 };
+
 function stopBlink() {
     console.log('Stop blink interval');
     clearInterval(blinkInterval);
