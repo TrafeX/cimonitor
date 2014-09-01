@@ -3,6 +3,8 @@ CI Monitor for Raspberry PI
 
 NodeJS app to control a traffic light (red/orange/green) with a Raspberry PI based on the job status from Jenkins.
 
+![CI Monitor in action](https://www.trafex.nl/wp-content/uploads/2014/08/2014-08-29-12.14.24-e1409413552822.jpg "CI Monitor in action")
+
 Howto
 -----
 
@@ -25,5 +27,15 @@ Done!
 As soon as the job starts the orange light will turn on.
 When the job is completed the orange light will go off and red or green will light up depending on the status of the job.
 
-![CI Monitor in action](https://www.trafex.nl/wp-content/uploads/2014/08/2014-08-29-12.14.24-e1409413552822.jpg "CI Monitor in action")
+Multiple jobs
+-------------
 
+It's possible to monitor more than 1 job, just add the notification plugin to all the jobs you want to monitor.
+The traffic light will work as following:
+
+1. Is one of the jobs failed? Turn on the red light.
+2. Is one of the jobs busy? Also turn on the orange light.
+3. Are all jobs successful? Turn on the green light.
+
+If, for example, the orange and red light are on, you know a job is failed and another one is building.
+The green light will only be lit if all jobs are successful.
