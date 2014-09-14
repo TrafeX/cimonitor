@@ -11,6 +11,7 @@ if (!process.env.DEBUG) {
 const GREEN = 0;
 const ORANGE = 1;
 const RED = 2;
+const BEACON = 3;
 
 // WiringPi states
 const ON = 0;
@@ -66,6 +67,15 @@ function stateChanged() {
     switchLight(GREEN, greenLight);
     switchLight(ORANGE, orangeLight);
     switchLight(RED, redLight);
+
+    // Switch beacon on for 3 seconds
+    switchLight(BEACON, ON);
+    setTimeout(function() {
+        console.log('Switch beacon off');
+        if (!process.env.DEBUG) {
+            wpi.digitalWrite(BEACON, OFF);
+        }
+    }, 3000);
 }
 
 function switchLight(number, state) {
