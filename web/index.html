@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CI Monitor</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body role="document">
+
+    <div class="container">
+        <h2>CI Monitor</h2>
+        <div id="project-status">Waiting for a build..</div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on('state-changed', function(jobStatus){
+                console.log(jobStatus);
+            var statusHtml = '';
+            for (var jobName in jobStatus) {
+                var classes = 'alert ';
+                switch (jobStatus[jobName]) {
+                    case 'failed':
+                        classes += 'alert-danger';
+                    break;
+                    case 'busy':
+                        classes += 'alert-warning';
+                    break;
+                    case 'successful':
+                        classes += 'alert-success';
+                    break;
+                }
+                statusHtml += '<div class="' + classes + '"><h2>' + jobName + '</h2></div>';
+            }
+            $('#project-status').html(statusHtml);
+        });
+    </script>
+</body>
+</html>
