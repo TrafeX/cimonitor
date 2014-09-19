@@ -35,15 +35,16 @@
         <div id="project-status">Waiting for a build..</div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script>
         var socket = io();
 
         socket.on('state-changed', function(jobStatus){
-                console.log(jobStatus);
             var statusHtml = '';
-            for (var jobName in jobStatus) {
+            var jobNames = Object.keys(jobStatus);
+            jobNames.sort();
+            jobNames.forEach(function(jobName) {
                 var classes = 'alert ';
                 var icon = 'glyphicon ';
                 switch (jobStatus[jobName]) {
@@ -64,7 +65,7 @@
                 jobName = '<span class="' + icon + '"></span> ' + jobName;
 
                 statusHtml += '<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>';
-            }
+            });
             $('#project-status').html(statusHtml);
         });
     </script>

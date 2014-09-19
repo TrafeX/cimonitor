@@ -1,0 +1,19 @@
+{
+    "name": "MF Develop Pipeline",
+    "url": "job/MF%20Develop%20Pipeline/",
+    "build":
+    {
+        "full_url": "http://jenkins.yourhost.com/job/MF%20Develop%20Pipeline/29/",
+        "number": 29,
+        "phase": "COMPLETED",
+        "status": "SUCCESS",
+        "url": "job/MF%20Develop%20Pipeline/29/",
+        "scm":
+        {
+            "url": "ssh://git@github.com/User/Repo.git",
+            "branch": "origin/develop",
+            "commit": "4ee10d6d374a34ec59f87f4e0c4c4bc9221930d4"
+        },
+        "artifacts": {}
+    }
+}

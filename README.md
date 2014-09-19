@@ -39,3 +39,14 @@ The traffic light will work as following:
 
 If, for example, the orange and red light are on, you know a job is failed and another one is building.
 The green light will only be lit if all jobs are successful.
+
+Development & testing
+----------------------
+
+You can run the app without access to GPIO ports for testing:
+
+    DEBUG=true node server.js
+
+The example-requests folder contains json requests to test the app:
+
+    curl -v -X POST -H 'Content-Type: application/json' -d @example-requests/failed1.json http://127.0.0.1:8080/jenkins
