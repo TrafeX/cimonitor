@@ -27,6 +27,12 @@ Done!
 As soon as the job starts the orange light will turn on.
 When the job is completed the orange light will go off and red or green will light up depending on the status of the job.
 
+Beacon
+------
+
+Besides the green, orange and red light it's possible to add a beacon or flashing light to relay 4.
+The beacon will light up for 3 seconds when the state of one of the jobs is changed.
+
 Multiple jobs
 -------------
 
@@ -43,7 +49,7 @@ The green light will only be lit if all jobs are successful.
 Webinterface
 ------------
 
-There's also a simple webinterface in addition to the traffic light.
+There's also a simple webinterface in addition to the traffic lights.
 When you're using the CI monitor for more than 1 job this can help to quickly identify which job is busy or failing.
 You can access the webinterface on `http://<IP of the Rapsberry Pi>:8080`
 

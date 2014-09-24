@@ -1,8 +1,8 @@
-// WiringPi numbers for the lights
+// WiringPi numbers for the relays
 const GREEN = 0;
 const ORANGE = 1;
 const RED = 2;
-const BEACON = 3;
+const BEACON = 3; // Optional, set to null if you don't use the beacon
 
 // WiringPi states
 const ON = 0;
@@ -80,14 +80,16 @@ function stateChanged() {
     switchLight(ORANGE, orangeLight);
     switchLight(RED, redLight);
 
-    // Switch beacon on for 3 seconds
-    switchLight(BEACON, ON);
-    setTimeout(function() {
-        console.log('Switch beacon off');
-        if (!process.env.DEBUG) {
-            wpi.digitalWrite(BEACON, OFF);
-        }
-    }, 3000);
+    // Enable beacon for 3 seconds
+    if (BEACON != null) {
+        switchLight(BEACON, ON);
+        setTimeout(function() {
+            console.log('Switch beacon off');
+            if (!process.env.DEBUG) {
+                wpi.digitalWrite(BEACON, OFF);
+            }
+        }, 3000);
+    }
 }
 
 function switchLight(number, state) {
