@@ -6,6 +6,7 @@
     "body-parser": "1.6.5",
     "express": "4.4.4",
     "log-timestamp": "0.1.1",
+    "socket.io": "1.1.0",
     "wiring-pi": "1.1.2"
   }
 }

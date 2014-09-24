@@ -1,8 +1,11 @@
-var express = require('express'),
-    util = require('util'),
-    cilight = require('./cilight');
+var express = require('express');
+var util = require('util');
 var app = express();
 var bodyParser = require('body-parser');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var cilight = require('./cilight')
+cilight.setSocket(io);
 require('log-timestamp');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -12,6 +15,10 @@ var port = process.env.PORT || 8080;
 
 var router = express.Router();
 
+// Service static files from /web
+app.use(express.static(__dirname + '/web'));
+
+// Handle specific routes
 router.post('/jenkins', function(req, res) {
     console.log('POST request:\n' + util.inspect(req.body));
 
@@ -39,5 +46,6 @@ router.post('/jenkins', function(req, res) {
 
 app.use('/', router);
 
-app.listen(port);
-console.log("Server running at http://127.0.0.1:" + port);
+http.listen(port, function(){
+    console.log("Server running at http://127.0.0.1:" + port);
+});

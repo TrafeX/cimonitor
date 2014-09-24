@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CI Monitor</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style>
+        .job-title {
+            font-size: 400%;
+            font-weight: bold;
+            color: black;
+        }
+        marquee {
+            display:block;
+        }
+        .alert-success {
+            background-color: #5CD65C;
+        }
+        .alert-warning {
+            background-color: #FFA347;
+        }
+        .alert-danger {
+            background-color: #EB3333;
+        }
+        #project-status {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body role="document">
+
+    <div class="container-fluid">
+        <div id="project-status">Waiting for a build..</div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on('state-changed', function(jobStatus){
+            var statusHtml = '';
+            var jobNames = Object.keys(jobStatus);
+            jobNames.sort();
+            jobNames.forEach(function(jobName) {
+                var classes = 'alert ';
+                var icon = 'glyphicon ';
+                switch (jobStatus[jobName]) {
+                    case 'failed':
+                        classes += 'alert-danger ';
+                        icon += 'glyphicon-warning-sign';
+                    break;
+                    case 'busy':
+                        classes += 'alert-warning';
+                        icon = '';
+                        jobName = '<marquee>' + jobName + '</marquee>';
+                    break;
+                    case 'successful':
+                        classes += 'alert-success';
+                        icon += 'glyphicon-ok';
+                    break;
+                }
+                jobName = '<span class="' + icon + '"></span> ' + jobName;
+
+                statusHtml += '<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>';
+            });
+            $('#project-status').html(statusHtml);
+        });
+    </script>
+</body>
+</html>
