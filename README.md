@@ -40,6 +40,15 @@ The traffic light will work as following:
 If, for example, the orange and red light are on, you know a job is failed and another one is building.
 The green light will only be lit if all jobs are successful.
 
+Webinterface
+------------
+
+There's also a simple webinterface in addition to the traffic light.
+When you're using the CI monitor for more than 1 job this can help to quickly identify which job is busy or failing.
+You can access the webinterface on `http://<IP of the Rapsberry Pi>:8080`
+
+![CI Monitor webinterface](https://www.trafex.nl/wp-content/uploads/2014/09/IMG_20140923_141340-e1411591456485.jpg "CI Monitor webinterface")
+
 Development & testing
 ----------------------
 
