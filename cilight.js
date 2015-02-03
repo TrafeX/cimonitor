@@ -3,6 +3,7 @@ const GREEN = 0;
 const ORANGE = 1;
 const RED = 2;
 const BEACON = 3; // Optional, set to null if you don't use the beacon
+const EXTRA = 4; // Optional, set to null if you don't use
 
 // WiringPi states
 const ON = 0;
@@ -23,8 +24,6 @@ if (!process.env.DEBUG) {
     }
 }
 
-var blinkValue = 0;
-var blinkInterval = null;
 var jobStatus = {};
 var io = null;
 
@@ -80,7 +79,7 @@ function stateChanged() {
     switchLight(ORANGE, orangeLight);
     switchLight(RED, redLight);
 
-    // Enable beacon for 3 seconds
+    // Enable beacon for 5 seconds
     if (BEACON != null) {
         switchLight(BEACON, ON);
         setTimeout(function() {
@@ -88,7 +87,17 @@ function stateChanged() {
             if (!process.env.DEBUG) {
                 wpi.digitalWrite(BEACON, OFF);
             }
-        }, 3000);
+        }, 5000);
+    }
+
+    if (EXTRA != null && greenLight == ON) {
+        switchLight(EXTRA, ON);
+        setTimeout(function() {
+            console.log('Switch extra off');
+            if (!process.env.DEBUG) {
+                wpi.digitalWrite(EXTRA, OFF);
+            }
+        }, 10000);
     }
 }
 
@@ -98,21 +107,4 @@ function switchLight(number, state) {
     if (!process.env.DEBUG) {
         wpi.digitalWrite(number, state);
     }
-};
-
-function stopBlink() {
-    console.log('Stop blink interval');
-    clearInterval(blinkInterval);
-}
-function blinkLight(number) {
-
-    console.log('Blink relay ' + number);
-
-    blinkInterval = setInterval(function() {
-        console.log('Blink ' + number + ' to state ' + blinkValue);
-        if (!process.env.DEBUG) {
-            wpi.digitalWrite(number, blinkValue);
-        }
-        blinkValue = +!blinkValue;
-    }, 600);
 }
