@@ -41,7 +41,7 @@
         var socket = io();
 
         socket.on('state-changed', function(jobStatus){
-            var statusHtml = '';
+            var statusHtml = [];
             var jobNames = Object.keys(jobStatus);
             jobNames.sort();
             jobNames.forEach(function(jobName) {
@@ -63,10 +63,14 @@
                     break;
                 }
                 jobName = '<span class="' + icon + '"></span> ' + jobName;
-
-                statusHtml += '<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>';
+                
+                if ('busy' === jobStatus[jobName] || 'failed' === jobStatus[jobName]) {
+                    statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
+                } else {
+                    statusHtml.push('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
+                }
             });
-            $('#project-status').html(statusHtml);
+            $('#project-status').html(statusHtml.join(''));
         });
     </script>
 </body>
