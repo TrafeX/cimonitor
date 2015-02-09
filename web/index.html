@@ -41,17 +41,17 @@
         var socket = io();
 
         socket.on('state-changed', function(jobStatus){
-            var statusHtml = [], placement = 'push';
+            var statusHtml = []; 
             var jobNames = Object.keys(jobStatus);
             jobNames.sort();
             jobNames.forEach(function(jobName) {
                 var classes = 'alert ';
                 var icon = 'glyphicon ';
+                var placement = 'push';
                 switch (jobStatus[jobName]) {
                     case 'failed':
                         classes += 'alert-danger ';
                         icon += 'glyphicon-warning-sign';
-                        jobName = '<blink>' + jobName + '</blink>';
                         placement = 'unshift';
                     break;
                     case 'busy':
