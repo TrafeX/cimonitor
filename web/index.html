@@ -41,7 +41,7 @@
         var socket = io();
 
         socket.on('state-changed', function(jobStatus){
-            var statusHtml = [], 
+            var statusHtml = []; 
             var jobNames = Object.keys(jobStatus);
             jobNames.sort();
             jobNames.forEach(function(jobName) {
