@@ -12,7 +12,7 @@
             font-weight: bold;
             color: black;
         }
-        marquee {
+        marquee, blink {
             display:block;
         }
         .alert-success {
@@ -41,7 +41,7 @@
         var socket = io();
 
         socket.on('state-changed', function(jobStatus){
-            var statusHtml = [];
+            var statusHtml = [], placement = 'push';
             var jobNames = Object.keys(jobStatus);
             jobNames.sort();
             jobNames.forEach(function(jobName) {
@@ -51,11 +51,14 @@
                     case 'failed':
                         classes += 'alert-danger ';
                         icon += 'glyphicon-warning-sign';
+                        jobName = '<blink>' + jobName + '</blink>';
+                        placement = 'unshift';
                     break;
                     case 'busy':
                         classes += 'alert-warning';
                         icon = '';
                         jobName = '<marquee>' + jobName + '</marquee>';
+                        placement = 'unshift';
                     break;
                     case 'successful':
                         classes += 'alert-success';
@@ -64,7 +67,7 @@
                 }
                 jobName = '<span class="' + icon + '"></span> ' + jobName;
                 
-                if ('busy' === jobStatus[jobName] || 'failed' === jobStatus[jobName]) {
+                if ('unshift' === placement) {
                     statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
                 } else {
                     statusHtml.push('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
