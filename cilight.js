@@ -16,7 +16,7 @@ const SUCCESSFUL = 'successful'
 
 if (!process.env.DEBUG) {
     var wpi = require('wiring-pi');
-    wpi.setup();
+    wpi.setup('wpi');
     for (var pin = 0; pin <= 7; pin++) {
         // Set all pins on OUTPUT mode
         wpi.pinMode(pin, wpi.OUTPUT);
