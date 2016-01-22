@@ -21,6 +21,8 @@ if (!process.env.DEBUG) {
     for (var pin = 0; pin <= 7; pin++) {
         // Set all pins on OUTPUT mode
         exec("gpio mode " + pin + " out", checkOutput);
+        // Set all pins to OFF
+        exec("gpio write " + pin + " " + OFF, checkOutput);
     }
 }
 
@@ -33,19 +35,19 @@ function checkOutput(error, stdout, stderr) {
     }
 };
 
-exports.failed = function (response) {
-    delete jobStatus[response.name]
-    jobStatus[response.name] = FAILED;
+exports.failed = function (jobName) {
+    delete jobStatus[jobName];
+    jobStatus[jobName] = FAILED;
     stateChanged();
 };
-exports.successfull = function (response) {
-    delete jobStatus[response.name];
-    jobStatus[response.name] = SUCCESSFUL;
+exports.successfull = function (jobName) {
+    delete jobStatus[jobName];
+    jobStatus[jobName] = SUCCESSFUL;
     stateChanged();
 };
-exports.started = function (response) {
-    delete jobStatus[response.name];
-    jobStatus[response.name] = BUSY;
+exports.started = function (jobName) {
+    delete jobStatus[jobName];
+    jobStatus[jobName] = BUSY;
     stateChanged();
 };
 exports.setSocket = function (socketio) {
@@ -94,19 +96,16 @@ function stateChanged() {
         switchLight(BEACON, ON);
         setTimeout(function() {
             console.log('Switch beacon off');
-            if (!process.env.DEBUG) {
-                exec("gpio write " + BEACON + " " + OFF, checkOutput);
-            }
+            switchLight(BEACON, OFF);
         }, 5000);
     }
 
+    // Enable 'extra' for 10 seconds after a successful deploy
     if (EXTRA != null && greenLight == ON) {
         switchLight(EXTRA, ON);
         setTimeout(function() {
             console.log('Switch extra off');
-            if (!process.env.DEBUG) {
-                exec("gpio write " + EXTRA + " " + OFF, checkOutput);
-            }
+            switchLight(EXTRA, OFF);
         }, 10000);
     }
 }

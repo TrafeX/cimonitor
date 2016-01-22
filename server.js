@@ -25,7 +25,7 @@ router.post('/jenkins', function(req, res) {
     switch (req.body.build.phase) {
         case 'STARTED':
             console.log('Status: Started');
-            cilight.started(req.body);
+            cilight.started(req.body.name);
             break;
         case 'COMPLETED':
             if (req.body.build.status == 'UNSTABLE' ||
@@ -33,12 +33,29 @@ router.post('/jenkins', function(req, res) {
                 req.body.build.status == 'ABORTED') {
 
                     console.log('Status: Failed');
-                    cilight.failed(req.body);
+                    cilight.failed(req.body.name);
                     break;
                 }
 
             console.log('Status: Successfull');
-            cilight.successfull(req.body);
+            cilight.successfull(req.body.name);
+            break;
+    }
+    res.status(200).end()
+});
+router.get('/deployment', function(req, res) {
+    console.log('GET request:\n' + util.inspect(req.query));
+
+    console.log('Status: ' + req.query.status);
+    switch (req.query.status) {
+        case 'started':
+            cilight.started(req.query.name);
+            break;
+        case 'successful':
+            cilight.successfull(req.query.name);
+            break;
+        case 'failed':
+            cilight.failed(req.query.name);
             break;
     }
     res.status(200).end()
