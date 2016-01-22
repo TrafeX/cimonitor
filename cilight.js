@@ -14,28 +14,37 @@ const FAILED = 'failed';
 const BUSY = 'busy';
 const SUCCESSFUL = 'successful'
 
+var sys = require('sys');
+var exec = require('child_process').exec;
+
 if (!process.env.DEBUG) {
-    var wpi = require('wiring-pi');
-    wpi.setup('wpi');
     for (var pin = 0; pin <= 7; pin++) {
         // Set all pins on OUTPUT mode
-        wpi.pinMode(pin, wpi.OUTPUT);
-        wpi.digitalWrite(pin, OFF);
+        exec("gpio mode " + pin + " out", checkOutput);
     }
 }
 
 var jobStatus = {};
 var io = null;
 
+function checkOutput(error, stdout, stderr) {
+    if (error !== null) {
+        console.log(error);
+    }
+};
+
 exports.failed = function (response) {
+    delete jobStatus[response.name]
     jobStatus[response.name] = FAILED;
     stateChanged();
 };
 exports.successfull = function (response) {
+    delete jobStatus[response.name];
     jobStatus[response.name] = SUCCESSFUL;
     stateChanged();
 };
 exports.started = function (response) {
+    delete jobStatus[response.name];
     jobStatus[response.name] = BUSY;
     stateChanged();
 };
@@ -47,6 +56,7 @@ exports.setSocket = function (socketio) {
         io.emit('state-changed', jobStatus);
     });
 };
+
 
 // Change light state based on job status
 function stateChanged() {
@@ -85,7 +95,7 @@ function stateChanged() {
         setTimeout(function() {
             console.log('Switch beacon off');
             if (!process.env.DEBUG) {
-                wpi.digitalWrite(BEACON, OFF);
+                exec("gpio write " + BEACON + " " + OFF, checkOutput);
             }
         }, 5000);
     }
@@ -95,7 +105,7 @@ function stateChanged() {
         setTimeout(function() {
             console.log('Switch extra off');
             if (!process.env.DEBUG) {
-                wpi.digitalWrite(EXTRA, OFF);
+                exec("gpio write " + EXTRA + " " + OFF, checkOutput);
             }
         }, 10000);
     }
@@ -105,6 +115,6 @@ function switchLight(number, state) {
     console.log('Switch relay ' + number + ' to state ' + state);
 
     if (!process.env.DEBUG) {
-        wpi.digitalWrite(number, state);
+        exec("gpio write " + number + " " + state, checkOutput);
     }
 }

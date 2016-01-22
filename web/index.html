@@ -48,9 +48,9 @@
         var socket = io();
 
         socket.on('state-changed', function(jobStatus){
-            var statusHtml = []; 
+            var statusHtml = [];
             var jobNames = Object.keys(jobStatus);
-            jobNames.sort();
+            jobNames.reverse();
             jobNames.forEach(function(jobName) {
                 var classes = 'alert ';
                 var icon = 'glyphicon ';
@@ -73,7 +73,7 @@
                     break;
                 }
                 jobName = '<span class="' + icon + '"></span> ' + jobName;
-                
+
                 if ('unshift' === placement) {
                     statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
                 } else {
