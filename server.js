@@ -25,7 +25,7 @@ router.post('/jenkins', function(req, res) {
     switch (req.body.build.phase) {
         case 'STARTED':
             console.log('Status: Started');
-            cilight.started(req.body.name);
+            cilight.started(req.body.name, req.body.build.scm.branch);
             break;
         case 'COMPLETED':
             if (req.body.build.status == 'UNSTABLE' ||
@@ -33,12 +33,12 @@ router.post('/jenkins', function(req, res) {
                 req.body.build.status == 'ABORTED') {
 
                     console.log('Status: Failed');
-                    cilight.failed(req.body.name);
+                    cilight.failed(req.body.name, req.body.build.scm.branch);
                     break;
                 }
 
             console.log('Status: Successfull');
-            cilight.successfull(req.body.name);
+            cilight.successfull(req.body.name, req.body.build.scm.branch);
             break;
     }
     res.status(200).end()

@@ -35,19 +35,25 @@ function checkOutput(error, stdout, stderr) {
     }
 };
 
-exports.failed = function (jobName) {
+function JobState(state, branch) {
+    this.state = state;
+    this.branch = typeof branch !== 'undefined' ? branch : '-';
+    this.date = Date.now();
+};
+
+exports.failed = function (jobName, branch) {
     delete jobStatus[jobName];
-    jobStatus[jobName] = FAILED;
+    jobStatus[jobName] = new JobState(FAILED, branch);
     stateChanged();
 };
-exports.successfull = function (jobName) {
+exports.successfull = function (jobName, branch) {
     delete jobStatus[jobName];
-    jobStatus[jobName] = SUCCESSFUL;
+    jobStatus[jobName] = new JobState(SUCCESSFUL, branch);
     stateChanged();
 };
-exports.started = function (jobName) {
+exports.started = function (jobName, branch) {
     delete jobStatus[jobName];
-    jobStatus[jobName] = BUSY;
+    jobStatus[jobName] = new JobState(BUSY, branch);
     stateChanged();
 };
 exports.setSocket = function (socketio) {
