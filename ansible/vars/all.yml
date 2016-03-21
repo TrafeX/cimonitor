@@ -1,0 +1,9 @@
+---
+server:
+  packages:
+    - vim
+    - git
+    - nodejs
+    - npm
+  timezone: UTC
+  locale: en_US.UTF-8

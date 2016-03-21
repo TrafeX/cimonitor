@@ -12,6 +12,21 @@
             font-weight: bold;
             color: black;
         }
+        .job-date {
+            font-size: 200%;
+            font-weight: bold;
+            color: black;
+            display:block;
+            text-align: right;
+            float:right;
+        }
+        .job-branch {
+            font-size: 200%;
+            font-weight: bold;
+            color: black;
+            display:block;
+            float:left;
+        }
         marquee, blink {
             display:block;
         }
@@ -32,11 +47,7 @@
             flex-wrap: wrap;
         }
         .alert {
-            width: 49%;
-            float: left;
-        }
-        .alert:nth-of-type(even) {
-            margin-left:1%;
+            width: 100%;
         }
     </style>
 </head>
@@ -48,6 +59,17 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment-with-locales.min.js"></script>
+
+    <script>
+        function refreshDateTime() {
+            $(".job-date").each(function() {
+                $(this).text(moment($(this).data('time')).locale('nl').fromNow());
+            });
+        }
+        setInterval(refreshDateTime, 60000);
+    </script>
+
     <script>
         var socket = io();
 
@@ -56,10 +78,12 @@
             var jobNames = Object.keys(jobStatus);
             jobNames.reverse();
             jobNames.forEach(function(jobName) {
+                var jobState = jobStatus[jobName];
+
                 var classes = 'alert ';
                 var icon = 'glyphicon ';
                 var placement = 'push';
-                switch (jobStatus[jobName]) {
+                switch (jobState.state) {
                     case 'failed':
                         classes += 'alert-danger ';
                         icon += 'glyphicon-warning-sign';
@@ -79,12 +103,13 @@
                 jobName = '<span class="' + icon + '"></span> ' + jobName;
 
                 if ('unshift' === placement) {
-                    statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
+                    statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span><div><span class="job-branch">' + jobState.branch + '</span><span class="job-date" data-time="' + jobState.date + '"></span></div></div>');
                 } else {
-                    statusHtml.push('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span></div>');
+                    statusHtml.push('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span><div><span class="job-branch">' + jobState.branch + '</span><span class="job-date" data-time="' + jobState.date + '"></span></div></div>');
                 }
             });
             $('#project-status').html(statusHtml.join(''));
+            refreshDateTime();
         });
     </script>
 </body>

@@ -19,8 +19,8 @@ Howto
     * Timeout: Default
 
 5. Clone this app on your Raspberry Pi: `git clone https://github.com/TrafeX/cimonitor.git`
-6. Install the dependencies: `sudo npm install`
-7. Start the app: `sudo node server.js`
+6. Run `vagrant up`
+7. Start the app: `sudo nodejs server.js`
 
 Done!
 
@@ -60,8 +60,8 @@ Development & testing
 
 You can run the app without access to GPIO ports for testing:
 
-    DEBUG=true node server.js
+    DEBUG=true sudo nodejs server.js
 
 The example-requests folder contains json requests to test the app:
 
-    curl -v -X POST -H 'Content-Type: application/json' -d @example-requests/failed1.json http://127.0.0.1:8080/jenkins
+    curl -v -X POST -H 'Content-Type: application/json' -d @example-requests/failed1.json http://cimonitor.local:8080/jenkins
