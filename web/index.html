@@ -103,9 +103,9 @@
                 jobName = '<span class="' + icon + '"></span> ' + jobName;
 
                 if ('unshift' === placement) {
-                    statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span><div><span class="job-branch">' + jobState.branch + '</span><span class="job-date" data-time="' + jobState.date + '"></span></div></div>');
+                    statusHtml.unshift('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span><div style="overflow: hidden;"><span class="job-branch">' + jobState.branch + '</span><span class="job-date" data-time="' + jobState.date + '"></span></div></div>');
                 } else {
-                    statusHtml.push('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span><div><span class="job-branch">' + jobState.branch + '</span><span class="job-date" data-time="' + jobState.date + '"></span></div></div>');
+                    statusHtml.push('<div class="' + classes + '"><span class="job-title"> ' + jobName + '</span><div style="overflow: hidden;"><span class="job-branch">' + jobState.branch + '</span><span class="job-date" data-time="' + jobState.date + '"></span></div></div>');
                 }
             });
             $('#project-status').html(statusHtml.join(''));
