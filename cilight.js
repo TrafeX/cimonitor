@@ -75,8 +75,8 @@ function stateChanged() {
 
     for (var jobName in jobStatus) {
 
-        console.log(jobName + ': ' + jobStatus[jobName]);
-        switch (jobStatus[jobName]) {
+        console.log(jobName + ': ' + jobStatus[jobName].state);
+        switch (jobStatus[jobName].state) {
             case FAILED:
                 redLight = ON;
                 greenLight = OFF;
