@@ -3,7 +3,7 @@ CI Monitor for Raspberry PI
 
 NodeJS app to control a traffic light (red/orange/green) with a Raspberry PI based on the job status from Jenkins.
 
-![CI Monitor in action](https://www.trafex.nl/wp-content/uploads/2014/08/2014-08-29-12.14.24-e1409413552822.jpg "CI Monitor in action")
+![CI Monitor in action](https://www.trafex.nl/wp-content/uploads/2014/08/2014-08-29-12.14.24.jpg "CI Monitor in action")
 
 Howto
 -----
@@ -53,7 +53,7 @@ There's also a simple webinterface in addition to the traffic lights.
 When you're using the CI monitor for more than 1 job this can help to quickly identify which job is busy or failing.
 You can access the webinterface on `http://<IP of the Rapsberry Pi>:8080`
 
-![CI Monitor webinterface](https://www.trafex.nl/wp-content/uploads/2014/09/IMG_20140923_141340-e1411591456485.jpg "CI Monitor webinterface")
+![CI Monitor webinterface](https://www.trafex.nl/wp-content/uploads/2014/09/IMG_20140923_141340.jpg "CI Monitor webinterface")
 
 Development & testing
 ----------------------
